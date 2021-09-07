@@ -48,7 +48,7 @@ The following settings are required to connect to the API.
 - A valid Nedap certificate (.PFX) *Tools4ever need to requests a certificate by Nedap to access the REST API*
 - Credentials for the IO Import *Different account credentials as the REST API*
 - Mapping between HR departments/functions to Cluster/ Education/ registrationProfile
-- An custom property on the HelloID Person contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
+- A custom property on the HelloID Person contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
 Example:
   ```javascript
   function getValue() {
