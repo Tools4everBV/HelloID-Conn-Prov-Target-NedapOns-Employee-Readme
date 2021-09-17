@@ -1,8 +1,9 @@
+# HelloID-Conn-Prov-Target-NedapONS-Employee-Readme
 <p align="center">
   <img src="https://user-images.githubusercontent.com/68013812/94918899-c672c700-04b3-11eb-9132-7125bbf77fa5.png"
    alt="drawing" style="width:300px;"/>
 </p>
-## HelloID-Conn-Prov-Target-NedapONS-Employee
+
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -23,7 +24,7 @@
 ## Introduction
 This Repository does only contains the readme. The source code can be found in a private Repoistry and is meant only for internal use. Link to Repoistry: [Nedap Ons Employee](https://github.com/Tools4everBV/HelloID-Conn-Prov-Target-NedapONS-Employee)
 
-Nedap Ons provides an API and XML import method to programmatically interact with its services and data. This connector can manage the employees in Nedap. It does not support scheduling or other non Identity and Access management functionality. It can create multiple employees accounts in Nedap for each employment (EmployeeId and Employment sequence number combination).
+Nedap Ons provides an API and XML import method to programmatically interact with its services and data. This connector has limited support for managing employees in Nedap. It does not support (employee nor client) scheduling or other none Identity and Access management functionality. It can create multiple employees accounts in Nedap for each employment (EmployeeId and Employment sequence number combination).
 
 
 <!-- GETTING STARTED -->
@@ -59,8 +60,9 @@ Example:
 
 
 ### Remarks
-- This connector does only manage the Employee object, You can use this connector in combination with the Nedap-Users connector. When you use them both in the same environment. You must add the Employee Target system as "Use account data from system". To make sure the employee object exists in Nedap before starting to create the account object.
-- The connector is built. Containing three properties which cannot be mapped directly from the person model in HelloID. So there is a mapping file needed. This file must include a mapping between HR departments and/or function to a Nedap cluster, education and registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
+- This connector only supports a limited Employee object. When the required functionality is outside scope of this limited Employee connector, you will need an external supplier to configure a direct connection between your HRM system and Nedap Employees. It this situation, we can still manage your Ons user accounts and permissions.
+ - You can use this connector in combination with the Nedap-Users connector. When you use them both in the same environment. You must add the Employee Target system as "Use account data from system". To make sure the employee object exists in Nedap before starting to create the account object.
+- The connector is built containing three properties which cannot be mapped directly from the person model in HelloID. So there is a mapping file needed. This file must include a mapping between HR departments and/or function to a Nedap cluster, education and registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
 - When updating an employee account, you cannot verify if a property is successfully updated in Nedap. To do this you must check the Import Rapportage from the Nedap UI. *Beheer > Import > Importrapportage inzien*
 
 
@@ -104,7 +106,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 |Set Cluster (Team)|Yes|Yes, *Additional mapping required*|No
 |Set education (Deskundigheidsprofiel )|Yes|Yes, *Additional mapping required*|No
 |Set Discipline |Yes|No|No
-|Set Profession |Yes|No|No
+|Set Profession (Beroepsgroep) |Yes|No|No
 |VacationRight|Yes|No, *outside the scope of identity management.*|No
 |AccountAmount|Yes|No, *outside the scope of identity management.*|No
 |VacationAmounts|Yes|No, *outside the scope of identity management.*|No
