@@ -13,6 +13,8 @@
   * [Prerequisites](#Prerequisites)
   * [Remarks](#Remarks)
 * [Provisioning](#provisioning)
+  * [Employee Additional Mapping](#Employee-Additional-Mapping)
+  * [Supported Properties](#Supported-Properties)
 * [Fact Sheet](#Fact-Sheet)
   * [Remote Nedap documentatie](#Remote-Nedap-documentatie)
 * [Setup the connector](Setup-The-Connector)
@@ -45,6 +47,8 @@ The following settings are required to connect to the API.
 | mappingFilePath| The Path to the mapping file   |
 | CSV separation Character| Mapping File CSV Separation Character         |
 
+------------------
+
 ### Prerequisites
 - A valid Nedap certificate (.PFX) *Tools4ever need to requests a certificate by Nedap to access the REST API*
 - Credentials for the IO Import *Different account credentials as the REST API*
@@ -65,7 +69,7 @@ Example:
 - The connector is built containing three properties which cannot be mapped directly from the person model in HelloID. So there is a mapping file needed. This file must include a mapping between HR departments and/or function to a Nedap cluster, education and registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
 - When updating an employee account, you cannot verify if a property is successfully updated in Nedap. To do this you must check the Import Rapportage from the Nedap UI. *Beheer > Import > Importrapportage inzien*
 
-
+-----------
 ## Provisioning
 Using this connector you will have the ability to create and manage the following items in Nedap:
 
@@ -80,18 +84,38 @@ Update:
 Delete:
 *  Set an end date of the contract for each employee account. So the user is unable to log in.
 
+----------
 
-Nedap Employee Mapping:
+###  Employee Additional Mapping:
 | Header    | Description |
 | ------------ | ----------- |
 | Title.ExternalId   | Property of the HelloID primary contract
 | Department.ExternalId  | Property of the HelloID primary contract
-|EducationId   |   Deskundigheidsprofiel > Import Code
+| EducationId   |   Deskundigheidsprofiel > Import Code
 | RegistrationProfile | Weekkaartprofiel > ProfileName
 | ClusterId  | Organigram > Identificatie
 | ClusterName  |    Organigram > Naam
 
 *Please note! That the mapped value will be created if they do not exist in Nedap! So if you choose in a RegistrationProfile that does not exist, it will be created. What might encounter some unexpected behavior.*
+
+### Supported Properties
+| PropertyName | Notes |
+| ------------ | ------------|
+| Id | IdentificationNo |
+| Firstname |  |
+| Birthname |  |
+| Lastname |  |
+| DateOfBirth |  |
+| EmailAddress |  |
+| Gender |  |
+| Initials |  |
+| NameUsage |  |
+| AuthenticationNumber | Is needed for second  factor |
+| Education | Deskundigheidsprofiel => Import Code  |
+| RegistrationProfile | Weekkaartprofiel => ProfileName |
+| Cluster | Organigram > Identificatie (Team) |
+| Contract | Only a single Employment. With start and endate.|
+___________
 
 ## Fact Sheet
 The following table displays an overview of the functionality for the Nedap Ons connector for HelloID Provisioning and Service Automation.
@@ -114,6 +138,8 @@ The following table displays an overview of the functionality for the Nedap Ons 
 |CollectiveAgreement|Yes|No, *outside the scope of identity management.*|No
 |FreeField|Yes|No|No
 |Set Dashboard profiel |No|No|No
+
+-------------
 
 
 ### Remote Nedap documentatie
