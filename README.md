@@ -1,4 +1,12 @@
 # HelloID-Conn-Prov-Target-NedapONS-Employee-Readme
+<br />
+
+> **_Information_**  <br />This connector has limited support for Nedap employees. Please check the [Fact Sheet](#Fact-Sheet) for more details.
+<br />Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
+
+<br />
+<br />
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/68013812/94918899-c672c700-04b3-11eb-9132-7125bbf77fa5.png"
    alt="drawing" style="width:300px;"/>
@@ -20,13 +28,6 @@
 * [Setup the connector](Setup-The-Connector)
 * [HelloID Docs](#helloid-docs)
 * [Forum Thread](#forum-thread)
-
-<br />
-
-> **_Information_**  <br />This connector has limited support for Nedap employees. Please check the [Fact Sheet](#Fact-Sheet) for more details.
-<br />Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
-
-<br />
 
 
 ## Introduction
