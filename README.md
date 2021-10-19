@@ -142,7 +142,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 |AccountAmount|Yes|No, *outside the scope of identity management.*|No
 |VacationAmounts|Yes|No, *outside the scope of identity management.*|No
 |CompensationAmount (compensatiesaldo)|Yes|No, *outside the scope of identity management.*|No
-|CompensationSetting (compensatie-vinkje)|Yes|No, *outside the scope of identity management.*|No
+|CompensationSetting (compensatieberekening instellingen)|Yes|No, *outside the scope of identity management.*|No
 |HourlyWages|Yes|No, *outside the scope of identity management.*|No
 |CollectiveAgreement|Yes|No, *outside the scope of identity management.*|No
 |FreeField|Yes|No|No
