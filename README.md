@@ -21,6 +21,12 @@
 * [HelloID Docs](#helloid-docs)
 * [Forum Thread](#forum-thread)
 
+<br />
+
+> **_Information_**  <br />This connector has limited support for Nedap employees. Please check the [Fact Sheet](#Fact-Sheet) for more details.
+<br />Extensive knowledge of HelloID provisioning and Nedap Ons (Nedap user and Nedap employee) are required.
+
+<br />
 
 
 ## Introduction
