@@ -125,7 +125,7 @@ The following table displays an overview of the functionality for the Nedap Ons 
 | Create Employees |Yes|Yes, *Simple employee, no scheduling* |No
 |Update Employees  |Yes|Yes, *Simple employee, no scheduling* |No
 |Delete Employee |No|No, *Sets an enddate on contract* |No
-|Manage Employee Contracts|Yes|Yes, *Simple employee, no scheduling* |No
+|Manage Employee Contracts|Yes|Yes 1 contract, *Simple employee, no scheduling* |No
 | Set RegestrationProfiel (Weekkaart) |Yes|Yes, *Additional mapping required*|No
 |Set Cluster (Team)|Yes|Yes, *Additional mapping required*|No
 |Set education (Deskundigheidsprofiel )|Yes|Yes, *Additional mapping required*|No
@@ -134,7 +134,9 @@ The following table displays an overview of the functionality for the Nedap Ons 
 |VacationRight|Yes|No, *outside the scope of identity management.*|No
 |AccountAmount|Yes|No, *outside the scope of identity management.*|No
 |VacationAmounts|Yes|No, *outside the scope of identity management.*|No
-|hourlyWages|Yes|No, *outside the scope of identity management.*|No
+|CompensationAmount (compensatiesaldo)|Yes|No, *outside the scope of identity management.*|No
+|CompensationSetting (compensatie-vinkje)|Yes|No, *outside the scope of identity management.*|No
+|HourlyWages|Yes|No, *outside the scope of identity management.*|No
 |CollectiveAgreement|Yes|No, *outside the scope of identity management.*|No
 |FreeField|Yes|No|No
 |Set Dashboard profiel |No|No|No
