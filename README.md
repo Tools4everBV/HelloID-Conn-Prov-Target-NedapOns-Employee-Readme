@@ -77,6 +77,7 @@ Example:
 
 ### Remarks
 - This connector only supports a limited Employee object. When the required functionality is outside scope of this limited Employee connector, you will need an external supplier to configure a direct connection between your HRM system and Nedap Employees. It this situation, we can still manage your Ons user accounts and permissions.
+ - Since the connector supports multiple accounts per a single HelloID person. The default Primary contract calculation is not always applicable. The connector contains an example of a "Primary contract calculation" , that calculates the primary contract for each employment (Nedap Account).
  - You can use this connector in combination with the Nedap-Users connector. When you use them both in the same environment. You must add the Employee Target system as "Use account data from system". To make sure the employee object exists in Nedap before starting to create the account object.
 - The connector is built containing three properties which cannot be mapped directly from the person model in HelloID. So there is a mapping file needed. This file must include a mapping between HR departments and/or function to a Nedap cluster, education and registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
 - When updating an employee account, you cannot verify if a property is successfully updated in Nedap. To do this you must check the Import Rapportage from the Nedap UI. *Beheer > Import > Importrapportage inzien*
@@ -101,8 +102,9 @@ Delete:
 ###  Employee Additional Mapping:
 | Header    | Description |
 | ------------ | ----------- |
-| Title.ExternalId   | Property of the HelloID primary contract
-| Department.ExternalId  | Property of the HelloID primary contract
+|Primary Contract Calcuatlion| Example of a Primary contract calculation.
+| Title.ExternalId   | Property of the HelloID primary contract per employment
+| Department.ExternalId  | Property of the HelloID primary contract per employment
 | EducationId   |   Deskundigheidsprofiel > Import Code
 | RegistrationProfile | Weekkaartprofiel > ProfileName
 | ClusterId  | Organigram > Identificatie
