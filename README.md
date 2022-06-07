@@ -153,8 +153,6 @@ The following table displays an overview of the functionality for the Nedap Ons 
 |HourlyWages|Yes|No, *outside the scope of identity management.*|No
 |CollectiveAgreement|Yes|No, *outside the scope of identity management.*|No
 |FreeField|Yes|No|No
-|Set Dashboard profiel |No|No|No
-
 -------------
 
 
