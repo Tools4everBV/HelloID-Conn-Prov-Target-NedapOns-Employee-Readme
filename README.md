@@ -90,7 +90,7 @@ Create:
 * Multiple employee objects for each Employement (employeeId + SequenceNumber), based on the contracts in condition from the Business Rules
 
 Update:
-* Update attributes of the corresponding employee account as configured in the connector mapping.
+* Update attributes of the corresponding employee account as configured in the connector mapping. An example of such mapping file can be found in the Assets folder.
 * Create new employee account for each Employement (employeeId + SequenceNumber) combination.
 * Disable account reference from Aref  -*See delete action* -
 
