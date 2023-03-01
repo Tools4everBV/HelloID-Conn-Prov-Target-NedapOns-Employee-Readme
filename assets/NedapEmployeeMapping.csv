@@ -1,0 +1,20 @@
+Title.ExternalId;Department.ExternalId;educationId;registrationProfile;clusterId;clusterName
+MEDASS;ASSTEAM;Powershell Master;Begeleider;1;Thuiszorg
+MEDMAR;MARTEAM;Arts;DBC - Cognitief trainer;12;Specialistisch team
+MANA;INK;Dietist;DBC - Ergotherapie;12;Specialistisch team
+MANA;;Ergotherapeut;DBC - Geestelijke verzorging;2;Thuiszorg
+MEDTES;DESGTEAM;Fysiotherapeut;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDTES;;Fysiotherapeut;DBC - Geestelijke verzorging;2;Thuiszorg
+MEDSBI;SAITEAM;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDSBU;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+DIREC;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDLERA;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDCONSY;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDINK;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDHELPSY;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDONT;DESGTEAM;Powershell Master;Begeleider;1;Thuiszorg
+MEDONT;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
+MEDPRO;;Powershell Master;Begeleider;1;Thuiszorg
+MEDAPP;;Powershell Master;Begeleider;1;Thuiszorg
+DEV;;Powershell Master;Begeleider;1;Thuiszorg
+Man;;Gespecialiseerde Begeleiding;DBC - Geestelijke verzorging;5;Thuiszorg
