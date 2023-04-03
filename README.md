@@ -20,19 +20,22 @@
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
-* [Introduction](#introduction)
-* [Getting Started](#getting-started)
-  * [Connection Settings](#Connection-Settings)
-  * [Prerequisites](#Prerequisites)
-  * [Remarks](#Remarks)
-* [Provisioning](#provisioning)
-  * [Employee Additional Mapping](#Employee-Additional-Mapping)
-  * [Supported Properties](#Supported-Properties)
-* [Fact Sheet](#Fact-Sheet)
-  * [Remote Nedap documentatie](#Remote-Nedap-documentatie)
-* [Setup the connector](Setup-The-Connector)
-* [HelloID Docs](#helloid-docs)
-* [Forum Thread](#forum-thread)
+- [HelloID-Conn-Prov-Target-NedapONS-Employee-Readme](#helloid-conn-prov-target-nedapons-employee-readme)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Getting Started](#getting-started)
+    - [Connection Settings](#connection-settings)
+    - [Prerequisites](#prerequisites)
+    - [Remarks](#remarks)
+  - [Provisioning](#provisioning)
+    - [Employee Additional Mapping:](#employee-additional-mapping)
+    - [Supported Properties](#supported-properties)
+  - [Fact Sheet](#fact-sheet)
+  - [|FreeField|Yes|No|No](#freefieldyesnono)
+    - [Remote Nedap documentatie](#remote-nedap-documentatie)
+  - [Setup the connector](#setup-the-connector)
+  - [HelloID Docs](#helloid-docs)
+  - [Forum Thread](#forum-thread)
 
 
 ## Introduction
@@ -81,6 +84,7 @@ Example:
  - You can use this connector in combination with the Nedap-Users connector. When you use them both in the same environment. You must add the Employee Target system as "Use account data from system". To make sure the employee object exists in Nedap before starting to create the account object.
 - The connector is built containing three properties which cannot be mapped directly from the person model in HelloID. So there is a mapping file needed. This file must include a mapping between HR departments and/or function to a Nedap cluster, education and registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
 - When updating an employee account, you cannot verify if a property is successfully updated in Nedap. To do this you must check the Import Rapportage from the Nedap UI. *Beheer > Import > Importrapportage inzien*
+- Preview Mode: Note that in preview mode (DryRun), all HelloID contracts of a Person are in scope. Therefore, it does not simulate the actual outcome when it comes to determining which account should be created, updated, or deleted. However, this DryRun mode is added to verify if the mapping, configuration setting, etc. are present and correct. The contracts in scope are normally configured in the business rules. This cannot be stimulated in Preview.
 
 -----------
 ## Provisioning
@@ -100,35 +104,35 @@ Delete:
 ----------
 
 ###  Employee Additional Mapping:
-| Header    | Description |
-| ------------ | ----------- |
-|Primary Contract Calcuatlion| Example of a Primary contract calculation.
-| Title.ExternalId   | Property of the HelloID primary contract per employment
-| Department.ExternalId  | Property of the HelloID primary contract per employment
-| EducationId   |   Deskundigheidsprofiel > Import Code
-| RegistrationProfile | Weekkaartprofiel > ProfileName
-| ClusterId  | Organigram > Identificatie
-| ClusterName  |    Organigram > Naam
+| Header                       | Description                                             |
+| ---------------------------- | ------------------------------------------------------- |
+| Primary Contract Calcuatlion | Example of a Primary contract calculation.              |
+| Title.ExternalId             | Property of the HelloID primary contract per employment |
+| Department.ExternalId        | Property of the HelloID primary contract per employment |
+| EducationId                  | Deskundigheidsprofiel > Import Code                     |
+| RegistrationProfile          | Weekkaartprofiel > ProfileName                          |
+| ClusterId                    | Organigram > Identificatie                              |
+| ClusterName                  | Organigram > Naam                                       |
 
 *Please note! That the mapped value will be created if they do not exist in Nedap! So if you choose in a RegistrationProfile that does not exist, it will be created. What might encounter some unexpected behavior.*
 
 ### Supported Properties
-| PropertyName | Notes |
-| ------------ | ------------|
-| Id | IdentificationNo |
-| Firstname |  |
-| Birthname |  |
-| Lastname |  |
-| DateOfBirth |  |
-| EmailAddress |  |
-| Gender |  |
-| Initials |  |
-| NameUsage |  |
-| AuthenticationNumber | Is needed for second  factor |
-| Education | Deskundigheidsprofiel => Import Code  |
-| RegistrationProfile | Weekkaartprofiel => ProfileName |
-| Cluster | Organigram > Identificatie (Team) |
-| Contract | Only a single Employment. With start and endate.|
+| PropertyName         | Notes                                            |
+| -------------------- | ------------------------------------------------ |
+| Id                   | IdentificationNo                                 |
+| Firstname            |                                                  |
+| Birthname            |                                                  |
+| Lastname             |                                                  |
+| DateOfBirth          |                                                  |
+| EmailAddress         |                                                  |
+| Gender               |                                                  |
+| Initials             |                                                  |
+| NameUsage            |                                                  |
+| AuthenticationNumber | Is needed for second  factor                     |
+| Education            | Deskundigheidsprofiel => Import Code             |
+| RegistrationProfile  | Weekkaartprofiel => ProfileName                  |
+| Cluster              | Organigram > Identificatie (Team)                |
+| Contract             | Only a single Employment. With start and endate. |
 ___________
 
 ## Fact Sheet
