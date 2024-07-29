@@ -146,8 +146,8 @@ The following table displays an overview of the functionality for the Nedap Ons 
 | Set RegestrationProfiel (Weekkaart) |Yes|Yes, *Additional mapping required*|No
 |Set Cluster (Team)|Yes|Yes, *Additional mapping required*|No
 |Set education (Deskundigheidsprofiel )|Yes|Yes, *Additional mapping required*|No
-|Set Discipline |Yes|No, *outside the scope of identity management.*|No
-|Set Profession (Beroepsgroep) |Yes|No|No
+|Set Discipline |Yes|No|No
+|Set Profession (Beroepsgroep) |Yes|No, *outside the scope of identity management.*|No
 |VacationRight|Yes|No, *outside the scope of identity management.*|No
 |AccountAmount|Yes|No, *outside the scope of identity management.*|No
 |VacationAmounts|Yes|No, *outside the scope of identity management.*|No
