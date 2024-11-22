@@ -17,21 +17,35 @@
    alt="drawing" style="width:300px;"/>
 </p>
 
+## Versioning
+|       | Description                                                | Date       |
+| ----- | ---------------------------------------------------------- | ---------- |
+| 2.0.0 | Split Mappings files for; `Weekkaart`, `Deskundigheid` en `Team` <br> Some Powershell 7.0 fixes| 14-11-2024 |
+| 1.1.0 | *Latest undocumented version..*                            | 27-03-2024 |
+| ...   | ...                                                        | ...        |
+| ...   | Initial release                                            | 2021-08-26 |
+
+> :warning: Upgrade warning!
+> Since the November 14, 2024 update, the connector has been changed from using a single mapping file to three separate files. If a customer prefers not to use three separate mapping files, they can continue to use the previous NedapEmployeeMapping.csv file for all three mappings by adding the same file three times in the configuration.
+
+
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 - [HelloID-Conn-Prov-Target-NedapONS-Employee-Readme](#helloid-conn-prov-target-nedapons-employee-readme)
+  - [Versioning](#versioning)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Getting Started](#getting-started)
     - [Connection Settings](#connection-settings)
     - [Prerequisites](#prerequisites)
     - [Remarks](#remarks)
+      - [Mapping Remarks](#mapping-remarks)
   - [Provisioning](#provisioning)
     - [Employee Additional Mapping:](#employee-additional-mapping)
     - [Supported Properties](#supported-properties)
   - [Fact Sheet](#fact-sheet)
-  - [Remote Nedap documentatie](#remote-nedap-documentatie)
+  - [Remote Nedap documentation](#remote-nedap-documentation)
   - [Setup the connector](#setup-the-connector)
   - [HelloID Docs](#helloid-docs)
   - [Forum Thread](#forum-thread)
@@ -58,7 +72,9 @@ The following settings are required to connect to the API.
 | IO Import Url | The Url of the XML import of Nedap, Example: https://<.ioservice.net/importws/import"   |
 | IO Import Username |   The username of the IO Import         |
 | IO Import Password|   The Password of the IO Import          |
-| mappingFilePath| The Path to the mapping file   |
+| Mapping RegistrationProfile| The Path to the mapping file Weekkaart  |
+| Mapping Education| The Path to the mapping file Deskundigheid  |
+| Mapping Cluster| The Path to the mapping file Teams  |
 | CSV separation Character| Mapping File CSV Separation Character         |
 
 ------------------
@@ -81,9 +97,24 @@ Example:
 - This connector only supports a limited Employee object. When the required functionality is outside scope of this limited Employee connector, you will need an external supplier to configure a direct connection between your HRM system and Nedap Employees. It this situation, we can still manage your Ons user accounts and permissions.
  - Since the connector supports multiple accounts per a single HelloID person. The default Primary contract calculation is not always applicable. The connector contains an example of a "Primary contract calculation" , that calculates the primary contract for each employment (Nedap Account).
  - You can use this connector in combination with the Nedap-Users connector. When you use them both in the same environment. You must add the Employee Target system as "Use account data from system". To make sure the employee object exists in Nedap before starting to create the account object.
-- The connector is built containing three properties which cannot be mapped directly from the person model in HelloID. So there is a mapping file needed. This file must include a mapping between HR departments and/or function to a Nedap cluster, education and registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
 - When updating an employee account, you cannot verify if a property is successfully updated in Nedap. To do this you must check the Import Rapportage from the Nedap UI. *Beheer > Import > Importrapportage inzien*
 - Preview Mode: Note that in preview mode (DryRun), all HelloID contracts of a Person are in scope. Therefore, it does not simulate the actual outcome when it comes to determining which account should be created, updated, or deleted. However, this DryRun mode is added to verify if the mapping, configuration setting, etc. are present and correct. The contracts in scope are normally configured in the business rules. This cannot be stimulated in Preview.
+
+#### Mapping Remarks
+- Example mappings can be found in the Assets folder.
+- The connector is built containing three properties which cannot be mapped directly from the person model in HelloID. So there are a multiple mapping file required. These files must include a mapping between HR departments and/or function to a Nedap Cluster, Education or Registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
+- The Teams/Cluster mappings are often a one-to-one relationship with the HelloID data model, meaning no mapping file is required. The connector offers a switch in Create.ps1 and Update.ps1 that determines whether to use HelloID values directly. When using direct values, there is also a specific mapping that determines when these values should be used, as shown below:
+  ```PowerShell
+  # Cluster Configuration
+  # Determine if the cluster requires a CSV mapping or has a one-to-one relationship with the HelloID configuration.
+  $skipCsvMappingForCluster = $false
+  if ($skipCsvMappingForCluster ) {
+      $clusterId = { $_.Department.ExternalId }
+      $clusterName = { $_.Department.DisplayName }
+  }
+  ```
+
+> :bulb: Please note that, starting with version 2.0.0, the connector was changed from using a single mapping file to three separate files. If a customer does not want to use three separate mapping files, they can use the previous `NedapEmployeeMapping.csv` file for all three mappings by simply adding the same file three times in the configuration.
 
 -----------
 ## Provisioning
@@ -156,15 +187,17 @@ The following table displays an overview of the functionality for the Nedap Ons 
 |HourlyWages|Yes|No, *outside the scope of identity management.*|No
 |CollectiveAgreement|Yes|No, *outside the scope of identity management.*|No
 |Addresses|Yes|No, *outside the scope of identity management.*|No
-|FreeField|Yes|No|No
+| FreeField |Yes|No|No|
+
 -------------
 
 
-### Remote Nedap documentatie
+## Remote Nedap documentation
 * Nedap API documentatie → [klik](https://www.ons-api.nl/APIS.html)
- * Nedap XML import handleiding → [klik](https://support.nedap-healthcare.com/topic/gegevens-importeren-in-ons-via-xml-bestanden#te-importeren-gegevens-en-schema-definitie-(xsd))
-* Nedap XML import documentatie → [klik](https://support.nedap-healthcare.com/images/technische_documenten/io_server_xml_interface.pdf)
+* Nedap XML import handleiding → [klik](https://support.nedap-ons.nl/support/solutions/articles/103000265750-gegevens-importeren-via-xml-bestanden)
+* Nedap XML import documentatie → [klik](https://hc-freshdesk-assets.s3.eu-central-1.amazonaws.com/Supportportaal%20Ons%20Suite/Technische%20documenten/XML%20Interface/io_server_xml_interface.pdf)
 * Nedap ONS autorisatie handleiding → [klik](https://ons-api.nl/support/Shield.html)
+
 
 ## Setup the connector
 

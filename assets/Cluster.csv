@@ -1,0 +1,16 @@
+Title.ExternalId;Department.ExternalId;clusterId;clusterName
+MEDASS;432;1;Thuiszorg
+MANA;;12;Specialistisch team
+MEDTES;DESGTEAM;12;Specialistisch team
+MEDTES;;12;Specialistisch team
+MEDSBI;;1;Thuiszorg
+MEDSBU;;12;Specialistisch team
+DIREC;;12;Specialistisch team
+MEDLERA;;12;Specialistisch team
+MEDCONSY;;12;Specialistisch team
+MEDINK;;12;Specialistisch team
+MEDHELPSY;;12;Specialistisch team
+MEDONT;754;1;Thuiszorg
+MEDONT;;12;Specialistisch team
+MEDPRO;;1;Thuiszorg
+MEDAPP;;1;Thuiszorg
