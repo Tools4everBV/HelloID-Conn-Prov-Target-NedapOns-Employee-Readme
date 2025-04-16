@@ -1,4 +1,4 @@
-Title.ExternalId;Department.ExternalId;registrationProfile
+HelloIDPrimaryLookupKey;HelloIDSecondaryLookupKey;NedapRegistrationProfile
 MEDASS;432;Begeleider
 MEDMAR;123M;DBC - Cognitief trainer
 MANA;56;DBC - Ergotherapie

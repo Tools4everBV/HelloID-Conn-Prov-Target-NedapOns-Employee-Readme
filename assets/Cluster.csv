@@ -1,4 +1,4 @@
-Title.ExternalId;Department.ExternalId;clusterId;clusterName
+HelloIDPrimaryLookupKey;HelloIDSecondaryLookupKey;NedapClusterId;NedapClusterName
 MEDASS;432;1;Thuiszorg
 MANA;;12;Specialistisch team
 MEDTES;DESGTEAM;12;Specialistisch team
