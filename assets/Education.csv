@@ -1,4 +1,4 @@
-Title.ExternalId;Department.ExternalId;educationId
+HelloIDPrimaryLookupKey;HelloIDSecondaryLookupKey;NedapEducationId
 10;3001;Gespecialiseerde Begeleiding
 MEDTES;DESGTEAM;Gespecialiseerde Begeleiding
 MEDSBI;;Arts
