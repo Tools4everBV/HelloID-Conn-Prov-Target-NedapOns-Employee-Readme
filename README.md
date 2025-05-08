@@ -111,11 +111,14 @@ The correlation configuration is used to specify which properties will be used t
 | Setting                   | Value   |
 | ------------------------- | ------- |
 | Enable correlation        | `True` |
-| Person correlation field  | `-`     |
-| Account correlation field | `-`     |
+| Person correlation field  | `n.a.`     |
+| Account correlation field | `n.a.`     |
 
 > [!IMPORTANT]
 > Correlation should be enabled even when no direct person properties are used for correlation. When correlation is not enabled, a correlated account will not be updated during account correlation. The Update action will not be triggered when Correlation is disabled. See remark [Correlation](#correlation).
+
+> [!NOTE]
+> In HelloID, you cannot clear the person and account correlation fields. However, the selected properties are not used in the connector.
 
 > [!TIP]
 > _For more information on correlation, please refer to our correlation [documentation](https://docs.helloid.com/en/provisioning/target-systems/powershell-v2-target-systems/correlation.html) pages_.
