@@ -111,8 +111,8 @@ The correlation configuration is used to specify which properties will be used t
 | Setting                   | Value   |
 | ------------------------- | ------- |
 | Enable correlation        | `True` |
-| Person correlation field  | `n.a.`     |
-| Account correlation field | `n.a.`     |
+| Person correlation field  | `ExternalId`     |
+| Account correlation field | `id`     |
 
 > [!IMPORTANT]
 > Correlation should be enabled even when no direct person properties are used for correlation. When correlation is not enabled, a correlated account will not be updated during account correlation. The Update action will not be triggered when Correlation is disabled. See remark [Correlation](#correlation).
@@ -174,9 +174,13 @@ $splatSortObject = @{
 
 #### Script Mapping lookup values
 ```Powershell
-# Lookup value which is used in the mapping to determine the education, registration profile, and optionally the Cluster(Team)
-$eduRegTeamPrimaryLookupKey   = { $_.Title.ExternalId }         # Mandatory
-$eduRegTeamSecondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
+# Lookup values which are used in the mapping to determine the education, registration profile, and optionally the Cluster(Team) 
+$eduPrimaryLookupKey = { $_.Title.ExternalId }          # Mandatory
+$eduSecondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
+$regPrimaryLookupKey = { $_.Title.ExternalId }          # Mandatory
+$regSecondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
+$teamPrimaryLookupKey = { $_.Department.ExternalId }    # Mandatory
+$teamSecondaryLookupKey = { $_.Title.ExternalId }       # Not Mandatory
 ```
 
 #### Cluster Configuration
