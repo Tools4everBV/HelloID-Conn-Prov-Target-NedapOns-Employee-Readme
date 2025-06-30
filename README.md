@@ -108,7 +108,7 @@ The following features are available:
 - **Mapping Files**<br>
   Mapping between HR departments/functions to Cluster/ Education/ registrationProfile
 - **Custom HelloId Property**<br>
-  A custom property on the HelloID Person contract with a combination of the employeeCode and EmploymentCode named: [custom.NedapOnsIdentificationNo]
+  A custom property on the HelloID Person contract with a combination of the employeeCode and EmploymentCode called: [custom.NedapOnsIdentificationNo]
 Example:
   ```javascript
   function getValue() {
@@ -172,7 +172,9 @@ The following lifecycle actions are available:
 
 ### Field mapping
 
-The field mapping can be imported using the _fieldMapping.json_ file. Besides the FieldMapping, some properties require additional mappings and are not listed in the field mapping. These properties will be added in the code:
+The field mapping can be imported using the `_fieldMapping.json` file.
+
+In addition to the field mapping, some properties require extra mappings that are not included in the file. These properties are added directly in the code:
 - MutationAction
 - Contract
 - Deskundigheid
@@ -183,7 +185,7 @@ The field mapping can be imported using the _fieldMapping.json_ file. Besides th
 Besides the configuration and field mapping, you can also configure script variables to decide which property from the HelloID contracts is used to look up a value in the mapping tables and how the primary contract calculation should be done. Please note that some `same` configuration must be applied in both the create and update scripts, as shown below:
 
 #### The Primary Contract Calculation foreach employment
-The Primary Contract Calculation is, by default, the same as the HelloID Primary Contract calculation. However, the order of properties can be adjusted to meet the customer's needs.
+The primary contract calculation is the same as the HelloID primary contract calculation. Note that the order of properties can be adjusted to meet the customer's requirements.
 
 ```Powershell
 ## Configuration
@@ -237,19 +239,20 @@ Because Nedap contains multiple accounts per HelloID person, the accounts will b
 This connector only supports a limited Employee object. When the required functionality is outside scope of this limited Employee connector, you will need an external supplier to configure a direct connection between your HRM system and Nedap Employees. It this situation, we can still manage your Ons user accounts and permissions.
 
 ### Primary Contract
-Since the connector supports multiple accounts per a single HelloID person. The default Primary contract calculation is not always applicable. The connector contains an example of a "Primary contract calculation", that calculates the primary contract for each employment (Nedap Account).
+Since the connector supports multiple accounts for a single HelloID person (per contract), the default primary contract calculation may not always be applicable. The connector includes an example of a primary contract calculation that determines the primary contract for each employment in Nedap.
 
 ### Combination Nedap User Connector
 You can use this connector in combination with the Nedap-Users connector. When you use them both in the same environment. You must add the Employee Target system as "Use account data from system". To make sure the employee object exists in Nedap before starting to create the account object.
 
 ### IO Import validation
-When updating an employee account, you cannot verify if a property is successfully updated in Nedap. To do this you must check the Import Rapportage from the Nedap UI. *Beheer > Import > Importrapportage inzien*
+When updating an employee account, it's not possible to directly verify whether the properties are successfully updated in Nedap. To confirm this, you need to check the_ Import Report_ in the Nedap UI by going to: _Beheer > Import > Importrapportage inzien._
+
 
 ### Preview Mode
 Note that in preview mode (DryRun), all HelloID contracts of a Person are in scope. Therefore, it does not simulate the actual outcome when it comes to determining which account should be created, updated, or deleted. However, this DryRun mode is added to verify if the mapping, configuration settings, etc. are present and correct. The contracts in scope are normally configured in the business rules. This cannot be stimulated in Preview.
 
 ### OutputInfo
-In the field mapping, some properties have a prefix `_outputInfo`. These properties are **only** used to return data from the Connector, and the information can be seen in the account data, notification or in reconciliation. Since there can be multiple accounts, the connector returns the values comma-separated. There is no link between the values.
+In the field mapping, some properties have a `_outputInfo` prefix. These properties are **only** used to return data from the connector, and the information is visible in the account data or in the notification. Since there can be multiple accounts, the connector returns the values as comma-separated strings. Note that there is **no link** between the individual values.
 - Cluster
 - Education
 - NedapOnsIdentificationNo
@@ -372,7 +375,7 @@ When importing accounts from Nedap, a single person can have multiple accounts. 
 ## Employee Additional Mapping:
 | Header                       | Description                                                           |
 | ---------------------------- | --------------------------------------------------------------------- |
-| Primary Contract Calcuatlion | Example of a Primary contract calculation.                            |
+| Primary Contract calculation | Example of a Primary contract calculation.                            |
 | HelloIDPrimaryLookupKey      | The Primary property of the HelloID primary contract per employment   |
 | HelloIDSecondaryLookupKey    | The Secondary Property of the HelloID primary contract per employment |
 | EducationId                  | Deskundigheidsprofiel > Import Code                                   |
