@@ -435,12 +435,12 @@ The following table displays an overview of the functionality for the Nedap Ons 
 
 The following endpoints are used by the connector
 
-| Endpoint                                   | Description                          | Type     |
-| ------------------------------------------ | ------------------------------------ | -------- |
-| /t/employees/by_identification_no/<id>     | Retrieve single Employee Information | Rest     |
-| /importws/import                           | CRUD Employee Information            | IOImport |
-| /t/employees/x-stream-connect/data         | Retrieve Employee Information List   | Rest     |
-| /t/payroll/contracts/x-stream-connect/data | Retrieve Contract Information        | IOImport |
+| Endpoint                                               | Description                          | Type     |
+| ------------------------------------------------------ | ------------------------------------ | -------- |
+| /v0/administration/employees/by_identification_no/<id> | Retrieve single Employee Information | Rest     |
+| /importws/import                                       | CRUD Employee Information            | IOImport |
+| /v0/xstream/employees/data                             | Retrieve Employee Information List   | Rest     |
+| /v0/xstream/contracts/data                             | Retrieve Contract Information        | Rest     |
 
 ### API documentation
 
