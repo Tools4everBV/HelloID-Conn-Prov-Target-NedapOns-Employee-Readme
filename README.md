@@ -44,12 +44,12 @@
     - [Limited Employee Connector](#limited-employee-connector)
     - [Primary Contract](#primary-contract)
     - [Combination Nedap User Connector](#combination-nedap-user-connector)
+    - [Correlate Only](#correlate-only)
     - [IO Import validation](#io-import-validation)
     - [Preview Mode](#preview-mode)
     - [OutputInfo](#outputinfo)
     - [Action Details (Script logic explanation)](#action-details-script-logic-explanation)
     - [Compare](#compare)
-    - [Always Update](#always-update)
     - [Notifications IsCreated | IsDeleted](#notifications-iscreated--isdeleted)
       - [Example Configuration: ](#example-configuration-)
         - [Custom Events:](#custom-events)
@@ -94,12 +94,12 @@ The following features are available:
 
 | Feature                                   | Supported | Actions                                                                     | Remarks |
 | ----------------------------------------- | --------- | --------------------------------------------------------------------------- | ------- |
-| **Account Lifecycle**                     | ✅        | Create, Update, Delete                                                      |         |
-| **Permissions**                           | ❌        | -                                                                           |         |
-| **Resources**                             | ❌        | -                                                                           |         |
-| **Entitlement Import: Accounts**          | ✅        | [Import remarks](#import)                                                   |         |
-| **Entitlement Import: Permissions**       | ❌        | -                                                                           |         |
-| **Governance Reconciliation Resolutions** | ✅        | Reconciliation _(Reporting Only)_ [Governance Remarks](#governance-remarks) |         |
+| **Account Lifecycle**                     | ✅         | Create, Update, Delete, Correlate only                                                      |         |
+| **Permissions**                           | ✅         | Set (Cluster, Education, RegistrationProfile)                     |         |
+| **Resources**                             | ❌         | -                                                                           |         |
+| **Entitlement Import: Accounts**          | ✅         | [Import remarks](#import)                                                   |         |
+| **Entitlement Import: Permissions**       | ✅         | [Import remarks](#import)                                                   |         |
+| **Governance Reconciliation Resolutions** | ✅         | Reconciliation _(Reporting Only)_ [Governance Remarks](#governance-remarks) |         |
 
 ## Getting started
 
@@ -112,7 +112,7 @@ The following features are available:
 - **Mapping Files**<br>
   Mapping between HR departments/functions to Cluster/ Education/ registrationProfile
 - **Custom HelloId Property**<br>
-  A custom property on the HelloID Person contract with a combination of the employeeCode and EmploymentCode called: [custom.NedapOnsIdentificationNo]
+  A custom property on the HelloID Person contract with a combination of the employeeCode and EmploymentCode called: `custom.NedapOnsIdentificationNo`
   Example:
   ```javascript
   function getValue() {
@@ -164,30 +164,38 @@ The correlation configuration is used to specify which properties will be used t
 
 The following lifecycle actions are available:
 
-| Action             | Description                                                                                                                                                                                                                                                                                         |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| create.ps1         | Creates multiple employee objects for each Employment (employeeId + SequenceNumber), based on the contracts in condition from the Business Rules.                                                                                                                                                   |
-| delete.ps1         | Removes an existing account or entity.                                                                                                                                                                                                                                                              |
-| update.ps1         | - Update attributes of the corresponding employee account as configured in the fieldMapping and in the CSV Mappings. <br> - Create new employee account for each Employment (employeeId + SequenceNumber) combination.<br> - Disable account reference from Account Reference -_See delete action_- |
-| import.ps1         | Import the existing account from Nedap _(Configurable by active) _                                                                                                                                                                                                                                  |
-| configuration.json | Contains the connection settings and general configuration for the connector.                                                                                                                                                                                                                       |
-| fieldMapping.json  | Defines mappings between person fields and target system person account fields.                                                                                                                                                                                                                     |
+
+| Action                                 | Description                                                                                                                                       |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| create.ps1                             | Creates multiple employee objects for each Employment (employeeId + SequenceNumber), based on the contracts in condition from the Business Rules. |
+| delete.ps1                             | Removes an existing account or entity.                                                                                                            |
+| update.ps1                             |  - Update attributes of the corresponding employee account as configured in the fieldMapping. <br> - Create new employee account for each Employment (employeeId + SequenceNumber) combination.<br> - Disable account reference from Account Reference -_See delete action_-                                 |                                                                                                                                                   |
+| correlateOnly\Create.ps1               | Correlate existing accounts only. Script should be used in the `Create` and `Update` action.                                                      |
+| import.ps1                             | Import the existing account from Nedap _(Configurable by active)_                                                                                 |
+| permissions/Cluster                    | Grant Cluster (Team) permissions to employee accounts                                                                                             |
+| permissions/Cluster/import             | Import all Cluster (Team) permissions _(Configurable by active)_                                                                                  |
+| permissions/Education                  | Grant Education (DeskundigheidsProfiel) permissions to employee accounts                                                                          |
+| permissions/Education/import           | Import all Education (DeskundigheidsProfiel) permissions _(Configurable by active)_                                                               |
+| permissions/RegistrationProfile        | Grant RegistrationProfile (Weekkaart) permissions to employee accounts                                                                            |
+| permissions/RegistrationProfile/import | Import all RegistrationProfile (Weekkaart) permissions _(Configurable by active)_                                                                 |
+| configuration.json                     | Contains the connection settings and general configuration for the connector.                                                                     |
+| fieldMapping.json                      | Defines mappings between person fields and target system person account fields.                                                                   |
 
 ### Field mapping
 
 The field mapping can be imported using the `_fieldMapping.json` file.
 
-In addition to the field mapping, some properties require extra mappings that are not included in the file. These properties are added directly in the code:
+In addition to the field mapping, some properties require extra mappings that are not included in the file. These properties are managed as follows:
 
-- MutationAction
-- Contract
-- Deskundigheid
-- Cluster
-- Weekkaart
+- MutationAction - Added directly in the code
+- Contract - Added directly in the code
+- Cluster (Team) - Managed through permissions scripts
+- Education (Deskundigheidsprofiel) - Managed through permissions scripts
+- RegistrationProfile (Weekkaart) - Managed through permissions scripts
 
 ### Script Mapping
 
-Besides the configuration and field mapping, you can also configure script variables to decide which property from the HelloID contracts is used to look up a value in the mapping tables and how the primary contract calculation should be done. Please note that some `same` configuration must be applied in both the create and update scripts, as shown below:
+Besides the configuration and field mapping, you can also configure script variables to decide which property from the HelloID contracts is used to look up a value in the mapping tables and how the primary contract calculation should be done. Please note that the same configuration must be applied in the permissions scripts (Cluster, Education, and RegistrationProfile), as shown below:
 
 #### The Primary Contract Calculation foreach employment
 
@@ -196,12 +204,15 @@ The primary contract calculation is the same as the HelloID primary contract cal
 ```Powershell
 ## Configuration
 # Primary Contract Calculation foreach employment
-$firstProperty =  @{ Expression = { $_.Details.Fte };             Descending = $true  }
-$secondProperty = @{ Expression = { $_.Details.HoursPerWeek };    Descending = $true  }
-$thirdProperty =  @{ Expression = { $_.Details.Sequence };        Descending = $true  }
-$fourthProperty = @{ Expression = { $_.EndDate };                 Descending = $true  }
-$fifthProperty =  @{ Expression = { $_.StartDate };               Descending = $false }
-$sixthProperty =  @{ Expression = { $_.ExternalId };              Descending = $false }
+$sortableEndDate = { if ([string]::IsNullOrEmpty($_.EndDate)) { [datetime]::MaxValue } else { $_.EndDate } }
+
+$firstProperty =   @{ Expression = { $_.ComputedIsActive };        Descending = $true  }
+$secondProperty =  @{ Expression = { $_.Details.Fte };             Descending = $true  }
+$thirdProperty =   @{ Expression = { $_.Details.HoursPerWeek };    Descending = $true  }
+$fourthProperty =  @{ Expression = { $_.Details.Sequence };        Descending = $true  }
+$fifthProperty =   @{ Expression = $sortableEndDate ;              Descending = $true  }
+$sixthProperty =   @{ Expression = { $_.StartDate };               Descending = $false }
+$seventhProperty = @{ Expression = { $_.ExternalId };              Descending = $false }
 
 # Priority Calculation Order (High priority -> Low priority)
 $splatSortObject = @{
@@ -211,27 +222,24 @@ $splatSortObject = @{
         $thirdProperty,
         $fourthProperty,
         $fifthProperty,
-        $sixthProperty)
+        $sixthProperty,
+        $seventhProperty)
 }
 ```
 
 #### Script Mapping lookup values
-
+Script Mapping lookup values for Cluster, Education and RegistrationProfile subPermission scripts
 ```Powershell
-# Lookup values which are used in the mapping to determine the education, registration profile, and optionally the Cluster(Team)
-$eduPrimaryLookupKey = { $_.Title.ExternalId }          # Mandatory
-$eduSecondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
-$regPrimaryLookupKey = { $_.Title.ExternalId }          # Mandatory
-$regSecondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
-$teamPrimaryLookupKey = { $_.Department.ExternalId }    # Mandatory
-$teamSecondaryLookupKey = { $_.Title.ExternalId }       # Not Mandatory
+# Lookup values which are used in the mapping to determine the subPermissions
+$primaryLookupKey = { $_.Title.ExternalId } # Mandatory
+$secondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
+
 ```
 
 #### Cluster Configuration
-
 ```Powershell
-# Determine if the cluster requires a CSV mapping or has a one-to-one relationship with the HelloID configuration.
-if (-not ($actionContext.Configuration.skipCsvMappingForCluster -eq $true)) {
+# Determine cluster value when the cluster has a one-to-one relationship in HelloID.
+if ($actionContext.Configuration.skipCsvMappingForCluster -eq $false) {
     $clusterId = { $_.Department.ExternalId }
     $clusterName = { $_.Department.DisplayName }
 }
@@ -252,11 +260,14 @@ This connector only supports a limited Employee object. When the required functi
 
 ### Primary Contract
 
-Since the connector supports multiple accounts for a single HelloID person (per contract), the default primary contract calculation may not always be applicable. The connector includes an example of a primary contract calculation that determines the primary contract for each employment in Nedap.
+Since the connector supports multiple accounts for a single HelloID person (per contract), the default primary contract calculation may not always be applicable for the permission scripts. The connector includes an example primary contract calculation that determines the primary contract for each employment in Nedap.
 
 ### Combination Nedap User Connector
 
 You can use this connector in combination with the Nedap-Users connector. When you use them both in the same environment. You must add the Employee Target system as "Use account data from system". To make sure the employee object exists in Nedap before starting to create the account object.
+
+### Correlate Only
+The connector includes a `correlateOnly\Create.ps1` script that can be used in both the Create and Update actions. This script is designed to correlate existing Nedap employee accounts without making any changes to the account properties. This is particularly useful when using an HRM synchronization that does not support updating `Weekkaart`, `Cluster`, or `DeskundigheidsProfiel`. In this scenario, the HR synchronization creates and updates the employee accounts, and HelloID manages the additional properties without updating the actual accounts.
 
 ### IO Import validation
 
@@ -270,10 +281,7 @@ Note that in preview mode (DryRun), all HelloID contracts of a Person are in sco
 
 In the field mapping, some properties have a `_outputInfo` prefix. These properties are **only** used to return data from the connector, and the information is visible in the account data or in the notification. Since there can be multiple accounts, the connector returns the values as comma-separated strings. Note that there is **no link** between the individual values.
 
-- Cluster
-- Education
 - NedapOnsIdentificationNo
-- RegistrationProfile
 - isDeleted
 - isCreated
 - externalId _(Only used in Import.ps1)_
@@ -288,13 +296,7 @@ The connector is designed using the following steps: First, it calculates and ve
 
 There is a mismatch between the account object from the REST API and the IOImport. To compare the account properties, the connector uses a hardcoded object to compare the properties against the `ActionContext.Data`. This means that when you add a new property in the FieldMapping, you should also remember to add the property to this hardcoded comparison object.
 
-> Keep in mind that only the properties that can be retrieved from Nedap are compared and displayed in the audit logs.
-
 > [!TIP] The hardcoded object is also used in the import script. To retrieve the same property in both the import and the 'normal' account, these objects should match each other.
-
-### Always Update
-
-The Update action always updates the Nedap account because some properties cannot be compared with the existing account.
 
 ### Notifications IsCreated | IsDeleted
 
@@ -347,11 +349,11 @@ Example mappings can be found in the Assets folder.
 
 ### Three Mapping Types
 
-The connector is built containing three properties which cannot be mapped directly from the person model in HelloID. So there are a multiple mapping file required. These files must include a mapping between HR departments and/or function to a Nedap Cluster, Education or Registration profile. The actions of the connector fails, when there is no mapping found. Of course, this can be changed in the code. But is not configurable by default.
+The connector manages three properties (Cluster, Education, and RegistrationProfile) through individual permissions scripts. These properties cannot be mapped directly from the person model in HelloID, so multiple mapping files are required. These files must include a mapping between HR departments and/or functions to a Nedap Cluster, Education, or Registration profile. The permissions scripts will fail when no mapping is found. Of course, this can be changed in the code, but it is not configurable by default.
 
 ### Cluster Mapping
 
-The Teams/Cluster mappings are often a one-to-one relationship with the HelloID data model, meaning no mapping file is required. The connector offers a switch in the configuration that determines whether to use HelloID values directly. When using direct values, there is also a specific mapping that determines when these values should be used, as shown [Cluster Configuration](#cluster-configuration)
+The Teams/Cluster mappings are often a one-to-one relationship with the HelloID data model, meaning no mapping file is required. The Cluster permissions script offers a switch in the configuration that determines whether to use HelloID values directly. When using direct values, there is also a specific mapping that determines when these values should be used, as shown in [Cluster Configuration](#cluster-configuration)
 
 > [!TIP]
 > Please note that, starting with version 2.0.0, the connector was changed from using a single mapping file to three separate files. If a customer does not want to use three separate mapping files, they can use the previous `NedapEmployeeMapping.csv` file for all three mappings by simply adding the same file three times in the configuration.
@@ -383,7 +385,7 @@ The import scripts include configuration options for which accounts to retrieve.
 The `ImportOnlyActiveEmployees` toggle also enables additional settings to expand the range of active contracts considered, using `daysBeforeContractStartDate` and `daysAfterContractEndDate`. These values can be adjusted in the configuration.
 
 > [!WARNING]
-> When using the import script on an initial implementation, be aware that employees are imported based on the employeenumber. This includes employees with an identificationno not based on the contract sequence (123456-ABC vs 123456-1) but do contain the employeenumber. These contracts are included in the accountreference array. After an enforcement these accounts will be disabled, cause no related active contract can be found.
+> When using the import script on an initial implementation, be aware that employees are imported based on the employee number. This includes employees with an IdentificationNo not based on the contract sequence (123456-ABC vs 123456-1) but do contain the employee number. These contracts are included in the accountReference array. After an enforcement these accounts will be disabled, cause no related active contract can be found.
 > During initial implementation these kind of accounts should be filtered out of the import population!
 
 #### Account access
@@ -392,7 +394,7 @@ Account access is not used in the Nedap Employee Connector; therefore, no `Accou
 
 #### Additional Employee properties
 
-The Nedap API does not support retrieving the RegistrationProfile, Cluster, and Team, these values cannot be imported directly. However, this is handled automatically during the update process, which is triggered after accounts are correlated by the import actions.
+The Nedap API does now support retrieving the RegistrationProfile, Cluster, and Education properties; These properties are managed through individual permissions scripts (Cluster, Education, and RegistrationProfile)
 
 ### Reconciliation
 
@@ -431,52 +433,52 @@ When importing accounts from Nedap, a single person can have multiple accounts. 
 | ClusterName                  | Organigram > Naam                                                     |
 
 > [!TIP]
-> That the mapped value will be created if they do not exist in Nedap! So if you choose in a RegistrationProfile that does not exist, it will be created. What might encounter some unexpected behavior.\*
+> That the mapped value will be created if they do not exist in Nedap! So if you choose in a RegistrationProfile that does not exist, it will be created. What might encounter some unexpected behavior.
 
 ## Supported Properties
 
-| PropertyName         | Notes                                            |
-| -------------------- | ------------------------------------------------ |
-| Id                   | IdentificationNo                                 |
-| Firstname            |                                                  |
-| Birthname            |                                                  |
-| Lastname             |                                                  |
-| DateOfBirth          |                                                  |
-| EmailAddress         |                                                  |
-| Gender               |                                                  |
-| Initials             |                                                  |
-| NameUsage            |                                                  |
-| AuthenticationNumber | Is needed for second factor                      |
-| Education            | Deskundigheidsprofiel => Import Code             |
-| RegistrationProfile  | Weekkaartprofiel => ProfileName                  |
-| Cluster              | Organigram > Identificatie (Team)                |
-| Contract             | Only a single Employment. With start and EnDate. |
+| PropertyName         | Notes                                                          |
+| -------------------- | -------------------------------------------------------------- |
+| Id                   | IdentificationNo                                               |
+| Firstname            |                                                                |
+| Birthname            |                                                                |
+| Lastname             |                                                                |
+| DateOfBirth          |                                                                |
+| EmailAddress         |                                                                |
+| Gender               |                                                                |
+| Initials             |                                                                |
+| NameUsage            |                                                                |
+| AuthenticationNumber | Is required for second factor                                    |
+| Education            | Deskundigheidsprofiel => Import Code (Managed via Permissions) |
+| RegistrationProfile  | Weekkaartprofiel => ProfileName (Managed via Permissions)      |
+| Cluster              | Organigram > Identificatie (Team) (Managed via Permissions)    |
+| Contract             | Only a single Employment. With start and EnDate.               |
 
 ## Fact Sheet
 
 The following table displays an overview of the functionality for the Nedap Ons connector for HelloID Provisioning and Service Automation.
 
-| Type of action                                           | Nedap | HelloID provisioning                             | HelloID Service Automation |
-| -------------------------------------------------------- | ----- | ------------------------------------------------ | -------------------------- |
-| Create Employees                                         | Yes   | Yes, _Simple employee, no scheduling_            | No                         |
-| Update Employees                                         | Yes   | Yes, _Simple employee, no scheduling_            | No                         |
-| Delete Employee                                          | No    | No, _Sets an enddate on contract_                | No                         |
-| Manage Employee Contracts                                | Yes   | Yes 1 contract, _Simple employee, no scheduling_ | No                         |
-| Set RegistrationProfile (Weekkaart)                      | Yes   | Yes, _Additional mapping required_               | No                         |
-| Set Cluster (Team)                                       | Yes   | Yes, _Additional mapping required_               | No                         |
-| Set education (Deskundigheidsprofiel )                   | Yes   | Yes, _Additional mapping required_               | No                         |
-| Set Dashboard Profile                                    | No    | No                                               | No                         |
-| Set Discipline                                           | Yes   | No                                               | No                         |
-| Set Profession (Beroepsgroep)                            | Yes   | No, _outside the scope of identity management._  | No                         |
-| VacationRight                                            | Yes   | No, _outside the scope of identity management._  | No                         |
-| AccountAmount                                            | Yes   | No, _outside the scope of identity management._  | No                         |
-| VacationAmounts                                          | Yes   | No, _outside the scope of identity management._  | No                         |
-| CompensationAmount (compensatiesaldo)                    | Yes   | No, _outside the scope of identity management._  | No                         |
-| CompensationSetting (compensatieberekening instellingen) | Yes   | No, _outside the scope of identity management._  | No                         |
-| HourlyWages                                              | Yes   | No, _outside the scope of identity management._  | No                         |
-| CollectiveAgreement                                      | Yes   | No, _outside the scope of identity management._  | No                         |
-| Addresses                                                | Yes   | No, _outside the scope of identity management._  | No                         |
-| FreeField                                                | Yes   | No                                               | No                         |
+| Type of action                                           | Nedap | HelloID provisioning                                | HelloID Service Automation |
+| -------------------------------------------------------- | ----- | --------------------------------------------------- | -------------------------- |
+| Create Employees                                         | Yes   | Yes, _Simple employee, no scheduling_               | No                         |
+| Update Employees                                         | Yes   | Yes, _Simple employee, no scheduling_               | No                         |
+| Delete Employee                                          | No    | No, _Sets an endDate on contract_                   | No                         |
+| Manage Employee Contracts                                | Yes   | Yes 1 contract, _Simple employee, no scheduling_    | No                         |
+| Set RegistrationProfile (Weekkaart)                      | Yes   | Yes, _Via Permissions, Additional mapping required_ | No                         |
+| Set Cluster (Team)                                       | Yes   | Yes, _Via Permissions, Additional mapping required_ | No                         |
+| Set education (Deskundigheidsprofiel )                   | Yes   | Yes, _Via Permissions, Additional mapping required_ | No                         |
+| Set Dashboard Profile                                    | No    | No                                                  | No                         |
+| Set Discipline                                           | Yes   | No                                                  | No                         |
+| Set Profession (Beroepsgroep)                            | Yes   | No, _outside the scope of identity management._     | No                         |
+| VacationRight                                            | Yes   | No, _outside the scope of identity management._     | No                         |
+| AccountAmount                                            | Yes   | No, _outside the scope of identity management._     | No                         |
+| VacationAmounts                                          | Yes   | No, _outside the scope of identity management._     | No                         |
+| CompensationAmount (compensatiesaldo)                    | Yes   | No, _outside the scope of identity management._     | No                         |
+| CompensationSetting (compensatieberekening instellingen) | Yes   | No, _outside the scope of identity management._     | No                         |
+| HourlyWages                                              | Yes   | No, _outside the scope of identity management._     | No                         |
+| CollectiveAgreement                                      | Yes   | No, _outside the scope of identity management._     | No                         |
+| Addresses                                                | Yes   | No, _outside the scope of identity management._     | No                         |
+| FreeField                                                | Yes   | No                                                  | No                         |
 
 ## Development resources
 
@@ -484,19 +486,24 @@ The following table displays an overview of the functionality for the Nedap Ons 
 
 The following endpoints are used by the connector
 
-| Endpoint                                               | Description                          | Type     |
-| ------------------------------------------------------ | ------------------------------------ | -------- |
-| /v0/administration/employees/by_identification_no/<id> | Retrieve single Employee Information | Rest     |
-| /importws/import                                       | CRUD Employee Information            | IOImport |
-| /v0/xstream/employees/data                             | Retrieve Employee Information List   | Rest     |
-| /v0/xstream/contracts/data                             | Retrieve Contract Information        | Rest     |
+| Endpoint                                                                                  | Description                                | Type     |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------ | -------- |
+| /v0/administration/employees/by_identification_no/{identificationNo}                      | Retrieve single Employee Information       | Rest     |
+| /v0/xstream/employees/data                                                                | Retrieve Employee Information List         | Rest     |
+| /v0/xstream/contracts/data                                                                | Retrieve Contract Information              | Rest     |
+| /v0/xstream/team_assignments/data                                                         | Retrieve Team/Clusters Assignments         | Rest     |
+| /v0/administration/teams                                                                  | Retrieve Teams/Clusters                    | Rest     |
+| /v0/administration/employees/{employeeId}/expertise_profiles                              | Retrieve Employee Expertise Profiles       | Rest     |
+| /v0/administration/employees/{employeeId}/weeksheet_profile                               | Retrieve Employee Registration Profile     | Rest     |
+| /v0/administration/employees/{employeeId}/clipped_teams?valid_from={date}&valid_to={date} | Retrieve Employee Cluster/Team Assignments | Rest     |
+| /importws/import                                                                          | CRUD Employee Information                  | IOImport |
 
 ### API documentation
 
-- Nedap API documentation → [klik](https://www.ons-api.nl/english/technical/APIS.html)
-- Nedap XML IOImport Manual → [klik](https://support.nedap-ons.nl/support/solutions/articles/103000265750-gegevens-importeren-via-xml-bestanden)
-- Nedap XML IOImport Documentation → [klik](https://hc-freshdesk-assets.s3.eu-central-1.amazonaws.com/Supportportaal%20Ons%20Suite/Technische%20documenten/XML%20Interface/io_server_xml_interface.pdf)
-- Nedap ONS authorization Manual → [klik](https://www.ons-api.nl/english/authorization/AuthorizationInOns.html)
+- Nedap API documentation → [Click](https://www.ons-api.nl/english/technical/APIS.html)
+- Nedap XML IOImport Manual → [Click](https://support.nedap-ons.nl/support/solutions/articles/103000265750-gegevens-importeren-via-xml-bestanden)
+- Nedap XML IOImport Documentation → [Click](https://hc-freshdesk-assets.s3.eu-central-1.amazonaws.com/Supportportaal%20Ons%20Suite/Technische%20documenten/XML%20Interface/io_server_xml_interface.pdf)
+- Nedap ONS authorization Manual → [Click](https://www.ons-api.nl/english/authorization/AuthorizationInOns.html)
 
 ## Getting help
 
