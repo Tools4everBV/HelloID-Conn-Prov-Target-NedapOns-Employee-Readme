@@ -62,6 +62,7 @@
     - [Cluster Mapping](#cluster-mapping)
   - [Governance Remarks](#governance-remarks)
     - [Import](#import)
+      - [Importing Accounts can unintentionally revoke accounts](#importing-accounts-can-unintentionally-revoke-accounts)
       - [Already linked accounts](#already-linked-accounts)
       - [EmployeeNumber](#employeenumber)
       - [Hardcoded mapping](#hardcoded-mapping)
@@ -363,6 +364,9 @@ The Teams/Cluster mappings are often a one-to-one relationship with the HelloID 
 The Nedap connector supports importing Nedap employee accounts, and the import functionality can be used as normal. However, there are some important remarks to keep in mind, see the [Import](#import) remarks section for details. Reconciliation is intended for **reporting** purposes only.
 
 ### Import
+
+#### Importing Accounts can unintentionally revoke accounts
+When accounts are imported, any Nedap accounts for the employee are detected by HelloID and, as a result, will be revoked during the next enforcement or account update. Normally, this can only happen to (sub)permissions. But in Nedap, you can have multiple accounts for a single HelloID Person, so the same rule applies as for the Subpermissions.
 
 #### Already linked accounts
 
