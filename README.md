@@ -166,21 +166,24 @@ The correlation configuration is used to specify which properties will be used t
 The following lifecycle actions are available:
 
 
-| Action                                 | Description                                                                                                                                       |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| create.ps1                             | Creates multiple employee objects for each Employment (employeeId + SequenceNumber), based on the contracts in condition from the Business Rules. |
-| delete.ps1                             | Removes an existing account or entity.                                                                                                            |
-| update.ps1                             |  - Update attributes of the corresponding employee account as configured in the fieldMapping. <br> - Create new employee account for each Employment (employeeId + SequenceNumber) combination.<br> - Disable account reference from Account Reference -_See delete action_-                                 |                                                                                                                                                   |
-| correlateOnly\Create.ps1               | Correlate existing accounts only. Script should be used in the `Create` and `Update` action.                                                      |
-| import.ps1                             | Import the existing account from Nedap _(Configurable by active)_                                                                                 |
-| permissions/Cluster                    | Grant Cluster (Team) permissions to employee accounts                                                                                             |
-| permissions/Cluster/import             | Import all Cluster (Team) permissions _(Configurable by active)_                                                                                  |
-| permissions/Education                  | Grant Education (DeskundigheidsProfiel) permissions to employee accounts                                                                          |
-| permissions/Education/import           | Import all Education (DeskundigheidsProfiel) permissions _(Configurable by active)_                                                               |
-| permissions/RegistrationProfile        | Grant RegistrationProfile (Weekkaart) permissions to employee accounts                                                                            |
-| permissions/RegistrationProfile/import | Import all RegistrationProfile (Weekkaart) permissions _(Configurable by active)_                                                                 |
-| configuration.json                     | Contains the connection settings and general configuration for the connector.                                                                     |
-| fieldMapping.json                      | Defines mappings between person fields and target system person account fields.                                                                   |
+| Action                                     | Description                                                                                                                                       |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| create.ps1                                 | Creates multiple employee objects for each Employment (employeeId + SequenceNumber), based on the contracts in condition from the Business Rules. |
+| delete.ps1                                 | Removes an existing account or entity.                                                                                                            |
+| update.ps1                                 | - Update attributes of the corresponding employee account as configured in the fieldMapping. <br> - Create new employee account for each Employment (employeeId + SequenceNumber) combination.<br> - Disable account reference from Account Reference -_See delete action_-                                                                          |
+| correlateOnly\Create.ps1                   | Correlate existing accounts only. Script should be used in the `Create` and `Update` action.                                                      |
+| import.ps1                                 | Import the existing account from Nedap _(Configurable by active)_                                                                                 |
+| permissions/Cluster                        | Grant Cluster (Team) permissions to employee accounts                                                                                             |
+| permissions/Cluster/permission             | Cluster (Team) permissions reference                                                                                              |
+| permissions/Cluster/import                 | Import all Cluster (Team) permissions _(Configurable by active)_                                                                                  |
+| permissions/Education                      | Grant Education (DeskundigheidsProfiel) permissions to employee accounts                                                                          |
+| permissions/Education/permission           | Education (DeskundigheidsProfiel) permissions reference                                                                                       |
+| permissions/Education/import               | Import all Education (DeskundigheidsProfiel) permissions _(Configurable by active)_                                                               |
+| permissions/RegistrationProfile            | Grant RegistrationProfile (Weekkaart) permissions to employee accounts                                                                            |
+| permissions/RegistrationProfile/permission | RegistrationProfile (Weekkaart) permissions reference                                                                                                 |
+| permissions/RegistrationProfile/import     | Import all RegistrationProfile (Weekkaart) permissions _(Configurable by active)_                                                                 |
+| configuration.json                         | Contains the connection settings and general configuration for the connector.                                                                     |
+| fieldMapping.json                          | Defines mappings between person fields and target system person account fields.                                                                   |
 
 ### Field mapping
 
@@ -239,11 +242,11 @@ $secondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
 
 #### Cluster Configuration
 ```Powershell
-# Determine cluster value when the cluster has a one-to-one relationship in HelloID.
-if ($actionContext.Configuration.skipCsvMappingForCluster -eq $false) {
+if ($actionContext.Configuration.skipCsvMappingForCluster) {
+    Write-Information 'NO additional CSV Mapping used, using HelloID contract values'
     $clusterId = { $_.Department.ExternalId }
     $clusterName = { $_.Department.DisplayName }
-}
+}else ....
 ```
 
 ## Remarks
