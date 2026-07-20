@@ -1,16 +1,16 @@
 HelloIDPrimaryLookupKey;HelloIDSecondaryLookupKey;NedapClusterId;NedapClusterName
-MEDASS;432;1;Thuiszorg
-MANA;;12;Specialistisch team
-MEDTES;DESGTEAM;12;Specialistisch team
-MEDTES;;12;Specialistisch team
-MEDSBI;;1;Thuiszorg
-MEDSBU;;12;Specialistisch team
-DIREC;;12;Specialistisch team
-MEDLERA;;12;Specialistisch team
-MEDCONSY;;12;Specialistisch team
-MEDINK;;12;Specialistisch team
-MEDHELPSY;;12;Specialistisch team
-MEDONT;754;1;Thuiszorg
-MEDONT;;12;Specialistisch team
-MEDPRO;;1;Thuiszorg
-MEDAPP;;1;Thuiszorg
+INK;MEDASS;1;Thuiszorg
+INK;MANA;12;Specialistisch team
+DESGTEAM;MEDTES;12;Specialistisch team
+HPD;MEDTES;12;Specialistisch team
+SAITEAM;MEDSBI;1;Thuiszorg
+SAITEAM;MEDSBU;12;Specialistisch team
+SAITEAM;DIREC;12;Specialistisch team
+PLATEAM;MEDLERA;12;Specialistisch team
+HPD;MEDCONSY;12;Specialistisch team
+SAITEAM;MEDINK;12;Specialistisch team
+HPDTEAM;MEDHELPSY;12;Specialistisch team
+SAITEAM;MEDONT;1;Thuiszorg
+HPDTEAM;MEDONT;12;Specialistisch team
+HPDTEAM;MEDPRO;1;Thuiszorg
+PLATEAM;MEDAPP;1;Thuiszorg

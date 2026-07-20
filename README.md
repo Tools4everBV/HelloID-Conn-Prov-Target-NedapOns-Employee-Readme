@@ -232,11 +232,19 @@ $splatSortObject = @{
 ```
 
 #### Script Mapping lookup values
-Script Mapping lookup values for Cluster, Education and RegistrationProfile subPermission scripts
+Script Mapping lookup values for Education and RegistrationProfile subPermission scripts
 ```Powershell
 # Lookup values which are used in the mapping to determine the subPermissions
 $primaryLookupKey = { $_.Title.ExternalId } # Mandatory
 $secondaryLookupKey = { $_.Department.ExternalId }   # Not Mandatory
+
+```
+
+Script Mapping lookup values for Cluster subPermission script
+```Powershell
+# Lookup values which are used in the mapping to determine the subPermissions
+$primaryLookupKey = { $_.Department.ExternalId } # Mandatory
+$secondaryLookupKey = { $_.Title.ExternalId }   # Not Mandatory
 
 ```
 
