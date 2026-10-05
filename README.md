@@ -296,6 +296,7 @@ In the field mapping, some properties have a `_outputInfo` prefix. These propert
 - NedapOnsIdentificationNo
 - isDeleted
 - isCreated
+- isUpdated
 - externalId _(Only used in Import.ps1)_
 
 > The connector relies on the properties inside \_outputInfo. When a specific outputInfo is not required and is removed from the field mapping, the code might need to be adjusted to prevent issues.
@@ -312,7 +313,7 @@ There is a mismatch between the account object from the REST API and the IOImpor
 
 ### Notifications IsCreated | IsDeleted
 
-The connector has two properties: IsCreated and IsDeleted. These properties are used for custom notifications. The connector cannot use the standard notification because there are multiple accounts per person. Therefore, it is possible that an account is created in the Update script, or during creation, one of the two accounts is correlated, triggering an account update. This means there will be no standard creation trigger
+The connector has three properties: IsCreated, IsUpdated and IsDeleted. These properties are used for custom notifications. The connector cannot use the standard notification because there are multiple accounts per person. Therefore, it is possible that an account is created in the Update script, or during creation, one of the two accounts is correlated, triggering an account update. This means there will be no standard creation trigger
 
 The properties are populated with the accounts that are created or deleted, respectively, in the Create, Update, and Delete actions. When there are no creations or deletions, it returns `null`. Therefore, you will need multiple custom events to cover all cases. You can also use the `Has Value` filter. Example notification message: _Created accounts with the following NedapOnsIdentificationNo's: [{{DATA._outputInfo.isCreated}}]_
 
