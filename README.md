@@ -43,6 +43,7 @@
     - [Correlation](#correlation)
     - [Limited Employee Connector](#limited-employee-connector)
     - [Primary Contract](#primary-contract)
+    - [Contract handling in Nedap](#contract-handling-in-nedap)
     - [Combination Nedap User Connector](#combination-nedap-user-connector)
     - [Correlate Only](#correlate-only)
     - [IO Import validation](#io-import-validation)
@@ -273,6 +274,27 @@ This connector only supports a limited Employee object. When the required functi
 ### Primary Contract
 
 Since the connector supports multiple accounts for a single HelloID person (per contract), the default primary contract calculation may not always be applicable for the permission scripts. The connector includes an example primary contract calculation that determines the primary contract for each employment in Nedap.
+
+### Contract handling in Nedap
+
+> [!NOTE]
+> The connector does **not** synchronize 1-to-1 contracts from HelloID to Nedap. It only ensures that the correct employee account has access at the right moment.
+
+**What the connector does**
+- **One merged contract per employee:**
+  - The start date is the earliest start date.
+  - The end date is the end of the consecutive chain (adjacent or overlapping contracts).
+- **No update is sent when:**
+  - The desired and current contract are equal.
+  - The desired start date is later than the current start date of an active contract in Nedap.
+- **Future start while a contract is active:** The connector sends the new contract plus a `HelloIDProcessedRevoked` contract from yesterday until yesterday.
+- **Delete / out of scope:** The connector sends a contract from yesterday until yesterday.
+
+**Nedap API behavior**
+- A later start date is not applied, and Nedap returns the warning *"Begindatum … is niet aangepast"*. The start date in Nedap remains unchanged.
+
+> [!IMPORTANT]
+> Be careful when the start date of a future contract is moved to a later date. Since Nedap does not apply a later start date, this change might need to be updated manually in the Nedap ONS UI.
 
 ### Combination Nedap User Connector
 
