@@ -390,6 +390,9 @@ The connector manages three properties (Cluster, Education, and RegistrationProf
 
 The Teams/Cluster mappings are often a one-to-one relationship with the HelloID data model, meaning no mapping file is required. The Cluster permissions script offers a switch in the configuration that determines whether to use HelloID values directly. When using direct values, there is also a specific mapping that determines when these values should be used, as shown in [Cluster Configuration](#cluster-configuration)
 
+> [!NOTE]
+> The Cluster permission is not revoked in Nedap. When the last contract goes out of scope, the delete action ends the contract, but the cluster (team) assignment in Nedap is left as it is.
+
 > [!TIP]
 > Please note that, starting with version 2.0.0, the connector was changed from using a single mapping file to three separate files. If a customer does not want to use three separate mapping files, they can use the previous `NedapEmployeeMapping.csv` file for all three mappings by simply adding the same file three times in the configuration.
 
